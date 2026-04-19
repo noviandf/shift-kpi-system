@@ -1,17 +1,133 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-bold text-xl text-slate-800 leading-tight">
             {{ __('Dashboard Supervisor') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    Selamat datang, Bapak/Ibu Supervisor! Di sini nanti tempat untuk menginput jadwal dan nilai KPI Agen.
+    <div class="py-12 bg-slate-50 min-h-screen">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+
+            <div
+                class="bg-slate-800 rounded-lg p-6 shadow-md border border-slate-900 text-white flex justify-between items-center">
+                <div>
+                    <h3 class="text-2xl font-bold">Selamat datang, {{ Auth::user()->name }}!</h3>
+                    <p class="text-slate-300 mt-1 text-sm">Berikut adalah ringkasan operasional tim Anda hari ini.</p>
+                </div>
+                <div class="hidden md:block">
+                    <span class="px-4 py-2 bg-slate-700 rounded-md text-sm font-bold shadow-inner text-slate-200">
+                        {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}
+                    </span>
                 </div>
             </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="p-3 bg-blue-100 text-blue-600 rounded-lg">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-500 uppercase tracking-wider">Total Agen</p>
+                        <p class="text-2xl font-black text-slate-900">{{ $totalAgents ?? '0' }} <span
+                                class="text-sm font-medium text-slate-500">Aktif</span></p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-500 uppercase tracking-wider">Shift Hari Ini</p>
+                        <p class="text-2xl font-black text-slate-900">{{ $shiftsToday ?? '0' }} <span
+                                class="text-sm font-medium text-slate-500">Jadwal</span></p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="p-3 bg-amber-100 text-amber-600 rounded-lg">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-500 uppercase tracking-wider">Rata-rata KPI</p>
+                        <p class="text-2xl font-black text-slate-900">{{ $avgKpi ?? '0' }} <span
+                                class="text-sm font-medium text-slate-500">/ 100</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border border-slate-200">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-slate-800">Perubahan Jadwal Terbaru</h3>
+                        <a href="{{ route('schedules.index') }}"
+                            class="text-sm font-bold text-blue-600 hover:text-blue-800 transition">Kelola Semua
+                            &rarr;</a>
+                    </div>
+                    <div class="p-0 overflow-x-auto">
+                        <table class="w-full text-sm text-left text-slate-600">
+                            <thead class="text-xs text-slate-700 uppercase bg-slate-50">
+                                <tr>
+                                    <th class="px-6 py-3">Agen</th>
+                                    <th class="px-6 py-3">Tgl Shift</th>
+                                    <th class="px-6 py-3">Jenis</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @if(isset($recentSchedules) && count($recentSchedules) > 0)
+                                @foreach($recentSchedules as $schedule)
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-3 font-medium text-slate-900">{{ $schedule->user->name }}</td>
+                                    <td class="px-6 py-3">
+                                        {{ \Carbon\Carbon::parse($schedule->shift_date)->format('d M Y') }}
+                                    </td>
+                                    <td class="px-6 py-3">
+                                        <span
+                                            class="px-2 py-1 text-xs font-bold rounded-md bg-blue-50 text-blue-700 border border-blue-200">
+                                            {{ $schedule->shift_type }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                @endforeach
+                                @else
+                                <tr>
+                                    <td colspan="3" class="px-6 py-4 text-center text-slate-500 italic">Belum ada data
+                                        jadwal terbaru.</td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Aksi Cepat</h3>
+                    <div class="space-y-3">
+                        <a href="{{ route('schedules.index') }}"
+                            class="flex items-center p-3 text-slate-700 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 hover:border-slate-300 transition">
+                            <div class="bg-white p-2 rounded shadow-sm mr-3">📅</div>
+                            <span class="font-bold text-sm">Kelola Jadwal</span>
+                        </a>
+                        <a href="{{ route('performances.index') }}"
+                            class="flex items-center p-3 text-slate-700 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 hover:border-slate-300 transition">
+                            <div class="bg-white p-2 rounded shadow-sm mr-3">📈</div>
+                            <span class="font-bold text-sm">Evaluasi KPI Agen</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </x-app-layout>

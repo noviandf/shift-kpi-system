@@ -16,7 +16,7 @@ return new class extends Migration
             // Relasi ke tabel users (Agen)
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->date('shift_date');
-            $table->enum('shift_type', ['Pagi', 'Siang', 'Malam', 'Libur']);
+            $table->string('shift_type', 10);
             $table->timestamps();
         });
     }
