@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\PerformanceController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,6 +39,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Modifikasi Jadwal
         Route::post('/schedules', [ScheduleController::class, 'store'])->name('schedules.store');
+        // Jalur untuk Simpan/Edit Manual
+        Route::post('/schedules/store', [ScheduleController::class, 'store'])->name('schedule.store');
+        Route::resource('users', UserController::class);
+
+        // Jalur untuk Import CSV Masal
+        Route::post('/schedules/import', [ScheduleController::class, 'import'])->name('schedule.import');
         Route::get('/schedules/{schedule}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit');
         Route::put('/schedules/{schedule}', [ScheduleController::class, 'update'])->name('schedules.update');
         Route::delete('/schedules/{schedule}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');

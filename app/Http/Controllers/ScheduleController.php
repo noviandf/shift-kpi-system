@@ -4,39 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Schedule;
 use App\Models\User;
+use App\Imports\ScheduleImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class ScheduleController extends Controller
 {
+
     public function index(Request $request)
     {
-        // 1. Setup Konfigurasi Waktu
+        // 1. Setup Konfigurasi Waktu (Tangkap dari form filter, default ke waktu saat ini)
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
 
-        $targetDate = Carbon::createFromDate($year, $month, 1);
+        $targetDate = \Carbon\Carbon::createFromDate($year, $month, 1);
         $daysInMonth = $targetDate->daysInMonth;
 
-        // 2. Query Agen (Transparansi Terbuka)
-        // OPINI ANDA DITERAPKAN: Semua orang kini bisa melihat semua agen.
-        $agentsQuery = User::where('role', 'agent');
+        // 2. Tarik Semua Agen (Dibutuhkan untuk Dropdown Form Input Manual)
+        $allAgents = User::where('role', 'agent')->get();
 
-        // Fitur pencarian nama sekarang bisa dipakai oleh Supervisor DAN Agen
+        // 3. Tarik Agen untuk Tabel Matriks (Dilengkapi Fitur Filter Pencarian Nama)
+        $agentsQuery = User::where('role', 'agent');
         if ($request->filled('search')) {
             $agentsQuery->where('name', 'like', '%' . $request->search . '%');
         }
-
         $agents = $agentsQuery->get();
 
-        // 3. Tarik Data Jadwal (Semua Jadwal di Bulan Tersebut)
-        $querySchedules = Schedule::whereMonth('shift_date', $month)
-            ->whereYear('shift_date', $year);
+        // 4. Tarik Seluruh Jadwal Operasional di Bulan Tersebut
+        $schedulesData = Schedule::whereMonth('shift_date', $month)
+            ->whereYear('shift_date', $year)
+            ->get();
 
-        $schedulesData = $querySchedules->get();
-
-        // 4. Fitur Ekspor CSV
+        // 5. Fitur Ekspor CSV
         if ($request->has('export') && $request->export === 'csv') {
             $fileName = "Laporan_Jadwal_{$targetDate->translatedFormat('F_Y')}.csv";
 
@@ -45,7 +46,7 @@ class ScheduleController extends Controller
                 fputcsv($file, ['Nama Agen', 'Tanggal', 'Kode Shift']);
 
                 foreach ($schedulesData as $s) {
-                    fputcsv($file, [$s->user->name, $s->shift_date, $s->shift_type]);
+                    fputcsv($file, [$s->user->name ?? 'Unknown', $s->shift_date, $s->shift_type]);
                 }
                 fclose($file);
             }, $fileName, [
@@ -54,14 +55,13 @@ class ScheduleController extends Controller
             ]);
         }
 
-        // 5. Transformasi Data Matrix
+        // 6. Transformasi Data Matrix (Metode Array Lookup untuk performa super cepat)
         $mappedSchedules = [];
         foreach ($schedulesData as $schedule) {
             $mappedSchedules[$schedule->user_id][$schedule->shift_date] = $schedule->shift_type;
         }
 
-        $allAgents = User::where('role', 'agent')->get();
-
+        // 7. Lempar semua variabel yang sudah disinkronkan ke index.blade.php
         return view('schedules.index', compact(
             'agents',
             'mappedSchedules',
@@ -72,7 +72,6 @@ class ScheduleController extends Controller
             'allAgents'
         ));
     }
-
     public function store(Request $request)
     {
         // Validasi diperbarui: Ditambah opsi I/S
@@ -135,5 +134,26 @@ class ScheduleController extends Controller
     {
         $schedule->delete();
         return redirect()->route('schedules.index')->with('success', 'Jadwal berhasil dihapus.');
+    }
+
+    public function import(Request $request)
+    {
+        // 1. Validasi ketat untuk mencegah user mengunggah file sembarangan
+        $request->validate([
+            'file_csv' => 'required|mimes:csv,txt,xlsx|max:2048',
+            'bulan'    => 'required|integer|min:1|max:12',
+            'tahun'    => 'required|integer|min:2024',
+        ]);
+
+        try {
+            // 2. Eksekusi proses import menggunakan class manual yang baru saja dibuat
+            Excel::import(new ScheduleImport($request->bulan, $request->tahun), $request->file('file_csv'));
+
+            // 3. Kembalikan user ke halaman dengan pesan sukses
+            return back()->with('success', 'Ratusan data jadwal berhasil ditarik ke database dalam hitungan detik!');
+        } catch (\Exception $e) {
+            // 4. Tangkap error jika format CSV berantakan agar web tidak crash (layar putih)
+            return back()->with('error', 'Gagal memproses CSV: ' . $e->getMessage());
+        }
     }
 }

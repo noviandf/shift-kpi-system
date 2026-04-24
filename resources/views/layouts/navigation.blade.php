@@ -20,6 +20,9 @@
                     <x-nav-link :href="route('performances.index')" :active="request()->routeIs('performances.*')">
                         {{ __('Evaluasi KPI') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                        {{ __('Manajemen Agen') }}
+                    </x-nav-link>
                     @else
                     <x-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.*')">
                         {{ __('Jadwal Saya') }}

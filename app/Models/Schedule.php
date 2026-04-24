@@ -12,6 +12,8 @@ class Schedule extends Model
     // 1. Izinkan kolom ini diisi form
     protected $fillable = ['user_id', 'shift_date', 'shift_type'];
 
+    //fungsi Import tidak diblokir oleh Laravel
+    protected $guarded = [];
     // 2. Buat relasi: Jadwal ini milik User (Agen) siapa?
     public function user()
     {

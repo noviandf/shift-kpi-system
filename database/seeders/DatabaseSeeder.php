@@ -21,16 +21,10 @@ class DatabaseSeeder extends Seeder
 
         // 2. Akun Agen
         User::factory()->create([
-            'name' => 'Agen Novian',
+            'name' => 'Novian Dwi F',
             'email' => 'novian@kantor.com',
             'password' => Hash::make('password123'),
             'role' => 'agent',
-        ]);
-
-        // 2. Akun Agen Operasional
-        User::factory(20)->create([
-            'role' => 'agent',
-            'password' => Hash::make('password123'),
         ]);
     }
 }

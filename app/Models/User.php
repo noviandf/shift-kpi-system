@@ -46,4 +46,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relasi ke tabel Schedules (Satu Agen punya banyak Jadwal)
+     */
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
+
+    /**
+     * Relasi ke tabel Performances (Satu Agen punya banyak Rapor KPI)
+     */
+    public function performances()
+    {
+        return $this->hasMany(Performance::class);
+    }
 }
