@@ -7,53 +7,58 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+Sistem Manajemen Penjadwalan Shift & KPI Agen - Capstone Project
+Sistem berbasis web ini dirancang untuk mengotomatisasi pengelolaan jadwal operasional dan perhitungan metrik kinerja (KPI) agen di PT Tirta Gracia Abadi. Dibangun menggunakan Laravel 12 untuk memastikan performa yang mutakhir dan keamanan data yang optimal.
+🚀 Fitur Utama
+•	Role-Based Access Control (RBAC): Pemisahan hak akses yang tegas antara Supervisor (Manajemen penuh) dan Agen (Akses personal).
+•	Hybrid Scheduling System: Dukungan input jadwal secara manual melalui antarmuka web maupun secara masal melalui Import File CSV.
+•	Otomatisasi Kalkulasi KPI: Perhitungan otomatis nilai akhir berdasarkan metrik Quality Assurance (QA), Average Handling Time (AHT), dan tingkat kehadiran.
+•	Personal Agent Dashboard: Halaman khusus bagi agen untuk memantau jadwal kerja harian dan hasil evaluasi kinerja secara privat.
+•	Responsive UI: Antarmuka yang ergonomis menggunakan Tailwind CSS untuk mengurangi beban kognitif dan kelelahan visual.
+🛠️ Tech Stack
+•	Framework: Laravel 12.x
+•	Language: PHP 8.2+
+•	Database: MySQL
+•	Frontend: Tailwind CSS & Blade Templating
+•	Server Environment: Laragon / XAMPP
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+💻 Panduan Instalasi Lokal
+Ikuti langkah-langkah di bawah ini untuk menjalankan program di perangkat masing-masing:
+1. Persiapan Lingkungan
+Pastikan Anda sudah menginstal Laragon (direkomendasikan), Composer, dan Node.js di laptop Anda.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+2.  Clone Repositori
+Buka terminal/git , lalu jalankan perintah:
+git clone https://github.com/username/nama-repo.git
+cd nama-repo
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+4. Instalasi Dependency
+Instal paket PHP dan JavaScript yang dibutuhkan:
+composer install
+npm install
 
-## Learning Laravel
+5. Konfigurasi Environment
+Salin file .env.example menjadi .env:
+cp .env.example .env
+Buka file .env di VS Code, lalu sesuaikan konfigurasi database:
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nama_database_anda
+DB_USERNAME=root
+DB_PASSWORD=
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+6. Generate Application Key
+php artisan key:generate
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+7. Migrasi Database & Seeding
+Buat database di MySQL (via Laragon/phpMyAdmin) sesuai dengan nama di .env, lalu jalankan migrasi untuk membuat tabel dan data awal (admin):
+ - php artisan migrate --seed
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+8. Menjalankan Aplikasi
+Buka dua terminal, lalu jalankan perintah berikut secara bersamaan:
+Terminal 1 (Server PHP):
+ - php artisan serve
+Terminal 2 (Compiler Asset):
+ - npm run dev
+Aplikasi kini dapat diakses melalui browser di alamat http://127.0.0.1:8000.
