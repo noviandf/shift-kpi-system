@@ -44,3 +44,56 @@ Buka terminal (atau Git Bash), lalu jalankan perintah berikut:
 ```bash
 git clone [https://github.com/username/nama-repo.git](https://github.com/username/nama-repo.git)
 cd nama-repo
+```
+
+### 3. Instalasi Dependency
+Instal paket PHP dan JavaScript yang dibutuhkan:
+```bash
+composer install
+npm install
+```
+
+### 4. Konfigurasi Environment
+Salin file `.env.example` menjadi `.env`:
+```bash
+cp .env.example .env
+```
+Buka file `.env` di teks editor (VS Code), lalu sesuaikan konfigurasi *database* berikut:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=tga_database_name
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 5. Generate Application Key
+Jalankan perintah ini untuk mengamankan aplikasi:
+```bash
+php artisan key:generate
+```
+
+### 6. Migrasi Database & Seeding
+Buat *database* kosong di MySQL (via Laragon/phpMyAdmin) sesuai dengan nama di `.env`. Setelah itu, jalankan migrasi untuk membuat tabel dan data awal:
+```bash
+php artisan migrate --seed
+```
+
+### 7. Menjalankan Aplikasi
+Buka **dua terminal terpisah**, lalu jalankan perintah berikut secara bersamaan:
+
+**Terminal 1 (Menjalankan Server PHP):**
+```bash
+php artisan serve
+```
+
+**Terminal 2 (Melakukan *Compile Asset* CSS/JS):**
+```bash
+npm run dev
+```
+
+Aplikasi kini dapat diakses melalui *browser* di alamat: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+---
+
