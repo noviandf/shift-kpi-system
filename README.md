@@ -25,17 +25,17 @@ Sistem berbasis web ini dirancang untuk mengotomatisasi pengelolaan jadwal opera
 💻 Panduan Instalasi Lokal
 Ikuti langkah-langkah di bawah ini untuk menjalankan program di perangkat masing-masing:
 1. Persiapan Lingkungan
-Pastikan Anda sudah menginstal Laragon (direkomendasikan), Composer, dan Node.js di laptop Anda.
+- Pastikan Anda sudah menginstal Laragon (direkomendasikan), Composer, dan Node.js di laptop Anda.
 
 2.  Clone Repositori
 Buka terminal/git , lalu jalankan perintah:
-git clone https://github.com/username/nama-repo.git
-cd nama-repo
+- git clone https://github.com/username/nama-repo.git
+- cd nama-repo
 
 4. Instalasi Dependency
 Instal paket PHP dan JavaScript yang dibutuhkan:
-composer install
-npm install
+- composer install
+- npm install
 
 5. Konfigurasi Environment
 Salin file .env.example menjadi .env:
@@ -48,8 +48,8 @@ DB_DATABASE=nama_database_anda
 DB_USERNAME=root
 DB_PASSWORD=
 
-6. Generate Application Key
-php artisan key:generate
+7. Generate Application Key
+- php artisan key:generate
 
 7. Migrasi Database & Seeding
 Buat database di MySQL (via Laragon/phpMyAdmin) sesuai dengan nama di .env, lalu jalankan migrasi untuk membuat tabel dan data awal (admin):
