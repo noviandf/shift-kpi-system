@@ -32,12 +32,12 @@ Buka terminal/git , lalu jalankan perintah:
 - git clone https://github.com/username/nama-repo.git
 - cd nama-repo
 
-4. Instalasi Dependency
+3. Instalasi Dependency
 Instal paket PHP dan JavaScript yang dibutuhkan:
 - composer install
 - npm install
 
-5. Konfigurasi Environment
+4. Konfigurasi Environment
 Salin file .env.example menjadi .env:
 cp .env.example .env
 Buka file .env di VS Code, lalu sesuaikan konfigurasi database:
@@ -48,14 +48,14 @@ DB_DATABASE=nama_database_anda
 DB_USERNAME=root
 DB_PASSWORD=
 
-7. Generate Application Key
+5. Generate Application Key
 - php artisan key:generate
 
-7. Migrasi Database & Seeding
+6. Migrasi Database & Seeding
 Buat database di MySQL (via Laragon/phpMyAdmin) sesuai dengan nama di .env, lalu jalankan migrasi untuk membuat tabel dan data awal (admin):
  - php artisan migrate --seed
 
-8. Menjalankan Aplikasi
+7. Menjalankan Aplikasi
 Buka dua terminal, lalu jalankan perintah berikut secara bersamaan:
 Terminal 1 (Server PHP):
  - php artisan serve
