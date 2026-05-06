@@ -42,7 +42,7 @@ Pastikan Anda sudah menginstal **Laragon** (direkomendasikan), **Composer**, dan
 ### 2. Clone Repositori
 Buka terminal (atau Git Bash), lalu jalankan perintah berikut:
 ```bash
-git clone [https://github.com/username/nama-repo.git](https://github.com/username/nama-repo.git)
+git clone https://github.com/noviandf/shift-kpi-system.git
 cd nama-repo
 ```
 
