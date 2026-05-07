@@ -10,7 +10,7 @@
 ---
 
 <h1 align="center">Sistem Manajemen Penjadwalan Shift & KPI Agen</h1>
-<p align="center"><strong>Capstone Project - PT Tirta Gracia Abadi</strong></p>
+<p align="center"><strong>Capstone Project - Sistem Informasi UT</strong></p>
 
 Sistem berbasis web ini dirancang untuk mengotomatisasi pengelolaan jadwal operasional dan perhitungan metrik kinerja (KPI) agen di PT Tirta Gracia Abadi. Dibangun menggunakan **Laravel 12** untuk memastikan performa yang mutakhir dan keamanan data yang optimal.
 
